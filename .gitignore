@@ -1,2 +1,8 @@
-# Project exclude paths
-/target/
+/target
+.classpath
+.project
+/.settings
+/.c9
+.idea/
+*.iml
+/derby.log
