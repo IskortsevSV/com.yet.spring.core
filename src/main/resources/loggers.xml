@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="consoleEventLogger" class="com.yet.spring.core.beans.ConsoleEventLogger" />
+
+    <!--проверяем доступин ил файл, дописал метод init-method , чтобы избежать ошибку в коде-->
+    <bean id="fileEventLogger" class="com.yet.spring.core.beans.FileEventLogger" init-method="init">
+        <constructor-arg value="C:\IdeaProject\project\com.yet.spring.core\text.txt"/>
+    </bean>
+
+    <!-- добавляя метод parent, bean обьявляется child и получаем super(...) от родителя-->
+    <bean id="cacheFileEventLogger" class="com.yet.spring.core.beans.CacheFileEventLogger"
+          destroy-method="destroy" parent="fileEventLogger">
+        <constructor-arg index="1" value="500"/>
+    </bean>
+
+    <!--    если бин абстрактный , можно ему указать abstract="true" и он не будет создаваться, но можно будет его использовать как родительский бин для наследование определенний-->
+    <!--id="mon" .. аттрибут depends-on="app" или "app,..." (зависимость) используется в том случае если нужно создать "app" , перед вызываем "mon"-->
+    <!-- незнаю еще что это такое   <alias name="app" alias="bbb"/>-->
+    <!--    LAZY init -> ... аттрибьют lazy-init ="true" ,не создатся  пока не будет вызван метод getBean()-->
+    <!--    если в теге beans указать default-lazy-init="true" то все бины будут поздние-->
+
+
+    <!--создаем коллекции аргументов конструктора -->
+    <bean id="combinedEventLogger" class="com.yet.spring.core.beans.CombinedEventLogger">
+        <constructor-arg>
+            <list>
+                <!-- списки или массивы injecting
+                 <value>...</value>  - simple value
+                 <ref bean="..." />  - other beans
+                 <bean class="..."/> - inner-beans (будет создан внутренний класс и засунут в лист)
+                 если set
+                 <set>
+                     ...
+                 </set>
+                 <map>
+                     <entry key=".." value".."/>
+                     <entry key=".." value-ref".."/>
+                     <entry key-ref=".." value-ref".."/>
+                     <entry key=".."> <bean class=".."/></entry>
+                 </map>
+                 -->
+
+                <ref bean="consoleEventLogger"/>
+                <ref bean="fileEventLogger"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+</beans>
