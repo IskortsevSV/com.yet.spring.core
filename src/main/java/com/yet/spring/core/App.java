@@ -1,28 +1,40 @@
 package com.yet.spring.core;
 
-import com.yet.spring.core.beans.*;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.yet.spring.core.beans.Client;
+import com.yet.spring.core.beans.Event;
+import com.yet.spring.core.beans.EventType;
+import com.yet.spring.core.loggers.EventLogger;
+import com.yet.spring.core.spring.AppConfig;
+import com.yet.spring.core.spring.LoggerConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
-
+@Service
 public class App {
 
+    @Autowired
     private Client client;
+
+    @Resource(name = "loggerMap")
     private Map<EventType, EventLogger> loggers;
+
+    @Resource(name = "defaultLogger")
     private EventLogger defaultLogger;
 
+    public App() {
+    }
 
     public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers) {
-        super();
         this.client = client;
         this.defaultLogger = eventLogger;
         this.loggers = loggers;
     }
 
-    private void logEvent(EventType type,Event event, String msg) {
+    private void logEvent(EventType type, Event event, String msg) {
         String message = msg.replaceAll(client.getId(), client.getFullName());
         event.setMsg(message);
 
@@ -41,12 +53,14 @@ public class App {
     }
 
 
-
     public static void main(String[] args) {
         // не содержит метод close()
         //ApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
 
-        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+        ctx.register(AppConfig.class, LoggerConfig.class);
+        ctx.scan("com.yet.spring.core");
+        ctx.refresh();
 
         App app = (App) ctx.getBean("app");
 
@@ -61,7 +75,6 @@ public class App {
 
         event = ctx.getBean(Event.class);
         app.logEvent(null, event, "Some event for 3");
-
 
         ctx.close();
     }

@@ -1,16 +1,16 @@
-package com.yet.spring.core.beans;
+package com.yet.spring.core.loggers;
 
-import java.util.Collection;
 import com.yet.spring.core.beans.Event;
+import org.springframework.stereotype.Component;
 
-public class CombinedEventLogger implements EventLogger{
+import javax.annotation.Resource;
+import java.util.Collection;
 
+@Component
+public class CombinedEventLogger implements EventLogger {
+
+    @Resource(name="combinedLoggers")
     private Collection<EventLogger> loggers;
-
-    public CombinedEventLogger(Collection<EventLogger> loggers) {
-        super();
-        this.loggers = loggers;
-    }
 
     @Override
     public void logEvent(Event event) {
