@@ -1,6 +1,6 @@
 package com.yet.spring.core.beans;
 
-public class ConsoleEventLogger implements EventLogger {
+public class ConsoleEventLogger extends AbstractLogger {
 
     @Override
     public void logEvent(Event event) {

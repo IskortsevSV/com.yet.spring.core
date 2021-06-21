@@ -1,15 +1,19 @@
 package com.yet.spring.core.beans;
 
 import java.util.Collection;
-import com.yet.spring.core.beans.Event;
+import java.util.Collections;
 
-public class CombinedEventLogger implements EventLogger{
+public class CombinedEventLogger extends AbstractLogger{
 
     private Collection<EventLogger> loggers;
 
     public CombinedEventLogger(Collection<EventLogger> loggers) {
         super();
         this.loggers = loggers;
+    }
+
+    public Collection<EventLogger> getLoggers() {
+        return Collections.unmodifiableCollection(loggers);
     }
 
     @Override

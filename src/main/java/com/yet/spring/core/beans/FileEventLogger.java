@@ -1,11 +1,11 @@
 package com.yet.spring.core.beans;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-
-public class FileEventLogger implements EventLogger {
+public class FileEventLogger extends AbstractLogger {
 
     private File file;
     private String filename;
