@@ -33,12 +33,18 @@
     <!--    LAZY init -> ... аттрибьют lazy-init ="true" ,не создатся  пока не будет вызван метод getBean()-->
     <!--    если в теге beans указать default-lazy-init="true" то все бины будут поздние-->
 
+    <util:list id="combinedLoggersList">
+        <ref bean="consoleEventLogger"/>
+        <ref bean="fileEventLogger"/>
+    </util:list>
 
     <!--создаем коллекции аргументов конструктора -->
     <bean id="combinedEventLogger" class="com.yet.spring.core.beans.CombinedEventLogger">
-        <constructor-arg>
+        <constructor-arg ref="combinedLoggersList"/>
+
+        <!--<constructor-arg>
             <list>
-                <!-- списки или массивы injecting
+                &lt;!&ndash; списки или массивы injecting
                  <value>...</value>  - simple value
                  <ref bean="..." />  - other beans
                  <bean class="..."/> - inner-beans (будет создан внутренний класс и засунут в лист)
@@ -52,15 +58,15 @@
                      <entry key-ref=".." value-ref".."/>
                      <entry key=".."> <bean class=".."/></entry>
                  </map>
-                 -->
+                 &ndash;&gt;
 
                 <ref bean="consoleEventLogger"/>
                 <ref bean="fileEventLogger"/>
             </list>
-        </constructor-arg>
+        </constructor-arg>-->
 
-        <property name="name" value="#{'Combined ' + combinedEventLogger.loggers.![name].toString()}"/>
-
+      <!--  <property name="name" value="#{'Combined ' + combinedEventLogger.loggers.![name].toString()}"/>-->
+        <property name="name" value="#{'Combined + combinedLoggersList.![name].toString()'}" />
     </bean>
 
 </beans>

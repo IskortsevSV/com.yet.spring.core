@@ -18,6 +18,7 @@
         <commons.io.version>2.4</commons.io.version>
 
         <aspectj.version>1.8.9</aspectj.version>
+
         <derby.version>10.13.1.1</derby.version>
 
         <spring.version>5.3.8</spring.version>
