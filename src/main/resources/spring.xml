@@ -80,6 +80,7 @@
                 systemEnvironment['USERNAME'] : systemEnvironment['USER'] ) +
                  '. Default logger is ' + app.defaultLogger.name}"/>
 
+        <property name="statisticsAspect" ref="statisticsAspect"/>
     </bean>
 
     <!--внутренний бин в конструкторе, если каждый раз нужен новый объект scope=prototype-->
