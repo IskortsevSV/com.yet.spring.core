@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Component
-public class FileEventLogger implements EventLogger {
+public class FileEventLogger extends AbstractLogger {
 
     private File file;
 
@@ -43,8 +43,10 @@ public class FileEventLogger implements EventLogger {
             e.printStackTrace();
         }
     }
+
+    @Value("File logger")
     @Override
-    public String getName() {
-        return null;
+    protected void setName(String name) {
+     this.name = name;
     }
 }

@@ -7,6 +7,7 @@ import com.yet.spring.core.loggers.EventLogger;
 import com.yet.spring.core.spring.AppConfig;
 import com.yet.spring.core.spring.LoggerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,22 @@ public class App {
     @Autowired
     private Client client;
 
+
     @Resource(name = "loggerMap")
     private Map<EventType, EventLogger> loggers;
 
-    @Resource(name = "defaultLogger")
+  /*  @Resource(name = "defaultLogger")
+    private EventLogger defaultLogger;*/
+
+    @Value("#{ T(com.yet.spring.core.beans.Event).isDay(9,18) ? "
+            + "cacheFileEventLogger : consoleEventLogger }")
     private EventLogger defaultLogger;
+
+    @Value("#{'Hello user ' + "
+            + "( systemProperties['os.name'].contains('Windows') ? "
+            + "systemEnvironment['USERNAME'] : systemEnvironment['USER'] ) + "
+            + "'. Default logger is ' + app.defaultLogger.name }")
+    private String startupMessage;
 
     public App() {
     }
@@ -64,6 +76,8 @@ public class App {
 
         App app = (App) ctx.getBean("app");
 
+        System.out.println(app.startupMessage);
+
         Client client = ctx.getBean(Client.class);
         System.out.println("Client says: " + client.getGreeting());
 
@@ -77,5 +91,8 @@ public class App {
         app.logEvent(null, event, "Some event for 3");
 
         ctx.close();
+    }
+    public EventLogger getDefaultLogger() {
+        return defaultLogger;
     }
 }
