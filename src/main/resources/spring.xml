@@ -15,7 +15,6 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:c="http://www.springframework.org/schema/c"
-       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
@@ -62,16 +61,35 @@
     <!--добавляем id loggerMap в конструктор-->
     <bean id="app" class="com.yet.spring.core.App">
         <constructor-arg ref="client"/>
-        <constructor-arg ref="consoleEventLogger"/>
+
+     <!--   <constructor-arg ref="consoleEventLogger"/>-->
+        <!--
+        если добавить после "...Event)?.isDay..." - ? то он проверит значение на null , и если оно null его и установит
+        T - означает type
+        -->
+        <constructor-arg value="#{T(com.yet.spring.core.beans.Event).isDay(8,17) ?
+         cacheFileEventLogger : combinedEventLogger }"/>
+
         <constructor-arg ref="loggerMap"/>
+
+        <property name="startupMessage" value="#{'Hello user ' +
+            ( systemProperties['os.name'].equals('Windows') ?
+                systemEnvironment['USERNAME'] : systemEnvironment['USER'] ) +
+                 '. Default logger is ' + app.defaultLogger.name}"/>
+
     </bean>
 
     <!--внутренний бин в конструкторе, если каждый раз нужен новый объект scope=prototype-->
     <bean id="event" class="com.yet.spring.core.beans.Event" scope="prototype">
-        <constructor-arg>
+        <constructor-arg name="date" value="#{new java.util.Date()}"/>
+        <constructor-arg name="dateFormat" value="#{T(java.text.DateFormat).getDateTimeInstance()}"/>
+
+        <!--<constructor-arg>
             <bean class="java.util.Date"/>
         </constructor-arg>
-        <constructor-arg ref="dateFormat"/>
+        <constructor-arg ref="dateFormat"/>-->
+
+
     </bean>
 
     <!-- используем factory-method для abstract класса у которого нет конструктора -->

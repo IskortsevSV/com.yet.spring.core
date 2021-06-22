@@ -9,6 +9,7 @@ public class FileEventLogger extends AbstractLogger {
 
     private File file;
     private String filename;
+    private String name;
 
     public FileEventLogger(String filename) {
         this.filename = filename;
@@ -34,6 +35,10 @@ public class FileEventLogger extends AbstractLogger {
 
     @Override
     public String getName() {
-        return null;
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

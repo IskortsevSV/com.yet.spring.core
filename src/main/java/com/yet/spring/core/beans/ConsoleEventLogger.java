@@ -2,6 +2,8 @@ package com.yet.spring.core.beans;
 
 public class ConsoleEventLogger extends AbstractLogger {
 
+    private String name;
+
     @Override
     public void logEvent(Event event) {
         System.out.println(event.toString());
@@ -9,6 +11,10 @@ public class ConsoleEventLogger extends AbstractLogger {
 
     @Override
     public String getName() {
-        return null;
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

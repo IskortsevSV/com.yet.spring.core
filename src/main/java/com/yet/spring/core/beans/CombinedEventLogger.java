@@ -3,9 +3,10 @@ package com.yet.spring.core.beans;
 import java.util.Collection;
 import java.util.Collections;
 
-public class CombinedEventLogger extends AbstractLogger{
+public class CombinedEventLogger extends AbstractLogger {
 
     private Collection<EventLogger> loggers;
+    private String name;
 
     public CombinedEventLogger(Collection<EventLogger> loggers) {
         super();
@@ -23,6 +24,12 @@ public class CombinedEventLogger extends AbstractLogger{
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
 }

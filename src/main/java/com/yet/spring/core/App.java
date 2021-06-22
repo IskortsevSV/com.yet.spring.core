@@ -1,7 +1,9 @@
 package com.yet.spring.core;
 
-import com.yet.spring.core.beans.*;
-import org.springframework.context.ApplicationContext;
+import com.yet.spring.core.beans.Client;
+import com.yet.spring.core.beans.Event;
+import com.yet.spring.core.beans.EventLogger;
+import com.yet.spring.core.beans.EventType;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -13,6 +15,9 @@ public class App {
     private Client client;
     private Map<EventType, EventLogger> loggers;
     private EventLogger defaultLogger;
+
+    private String startupMessage;
+
 
 
     public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers) {
@@ -50,6 +55,8 @@ public class App {
 
         App app = (App) ctx.getBean("app");
 
+        System.out.println(app.startupMessage);
+
         Client client = ctx.getBean(Client.class);
         System.out.println("Client says: " + client.getGreeting());
 
@@ -65,4 +72,13 @@ public class App {
 
         ctx.close();
     }
+
+    public void setStartupMessage(String startupMessage) {
+        this.startupMessage = startupMessage;
+    }
+
+    public EventLogger getDefaultLogger() {
+        return defaultLogger;
+    }
+
 }
